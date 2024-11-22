@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: RoadMaterial
-    second: {fileID: 2100000, guid: 78f401887c2d75f458ba92ee47b2f783, type: 2}
+    second: {fileID: 2100000, guid: 7582ce37347c3034bafdf700f627affb, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
