@@ -142,21 +142,18 @@ namespace Valve.VR.InteractionSystem.Sample
         private IEnumerator DoReset()
         {
             float startTime = Time.time;
-            float overTime = 1f;
+            float overTime = 5f;
             float endTime = startTime + overTime;
 
-            buggy.transform.position = resetToPoint.transform.position;
-            buggy.transform.rotation = resetToPoint.transform.rotation;
-            buggy.transform.localScale = initialScale * 0.1f;
+            buggy.maxTorque = 50f;
 
             while (Time.time < endTime)
             {
-                buggy.transform.localScale = Vector3.Lerp(buggy.transform.localScale, initialScale, Time.deltaTime * 5f);
+                
                 yield return null;
             }
 
-            buggy.transform.localScale = initialScale;
-
+            buggy.maxTorque = 35f;
             resettingRoutine = null;
         }
 
