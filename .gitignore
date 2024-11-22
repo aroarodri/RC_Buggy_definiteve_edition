@@ -72,6 +72,4 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 .vscode
 
-Assets/Recursos/Materiales/Textures/
-
-Assets/Recursos/Materiales/Shaders/
+Assets/Recursos/Shaders/
