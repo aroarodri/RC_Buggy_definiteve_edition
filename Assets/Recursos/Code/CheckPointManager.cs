@@ -1,17 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro; // Importar TextMeshPro
 
 public class CheckPointManager : MonoBehaviour
 {
-    public List<CheckPoint> checkPoints;  // Lista de checkpoints en orden
-    private int currentIndex = 0;         // Índice del checkpoint activo
-    private int lapsCompleted = 0;        // Contador de vueltas
+    // Lista de checkpoints en orden
+    [SerializeField] private List<CheckPoint> checkPoints;
+
+    // Índice del checkpoint activo
+    [SerializeField] private int currentIndex = 0;
+
+    // Contador de vueltas
+    [SerializeField] private int lapsCompleted = 0;
+
+    // Número máximo de vueltas
+    [SerializeField] private int maxLaps = 3;
+
+    [SerializeField] private TextMeshProUGUI lapsText;
 
     void Start()
     {
         // Inicializar checkpoints
         ResetCheckPoints();
+
         if (checkPoints.Count > 0)
         {
             // Activamos el primer checkpoint al inicio
@@ -24,6 +36,9 @@ public class CheckPointManager : MonoBehaviour
             int index = i; // Necesitamos capturar el índice en una variable local debido a la naturaleza de las lambdas
             checkPoints[i].onCheckPointTriggered.AddListener(() => HandleCheckPointTriggered(index));
         }
+
+        // Actualizar texto inicial de vueltas
+        UpdateLapsText();
     }
 
     void OnDestroy()
@@ -45,8 +60,21 @@ public class CheckPointManager : MonoBehaviour
             // Si hemos completado todos los checkpoints, incrementamos el contador de vueltas
             if (currentIndex >= checkPoints.Count)
             {
-                lapsCompleted++;  // Completar una vuelta
-                Debug.LogError($"Vuelta completada: {lapsCompleted}");
+                // Completar una vuelta
+                lapsCompleted++;
+                Debug.Log("Vuelta completada");
+
+                // Actualizar el texto de vueltas
+                UpdateLapsText();
+
+                // Comprobar si se ha alcanzado el número máximo de vueltas
+                if (lapsCompleted >= maxLaps)
+                {
+                    Debug.Log("¡Máximo número de vueltas alcanzado!");
+                    EndRace();
+                    return;
+                }
+
                 ResetCheckPoints(); // Reiniciar checkpoints
                 currentIndex = 0;  // Reiniciar el índice
             }
@@ -68,8 +96,18 @@ public class CheckPointManager : MonoBehaviour
         }
     }
 
-    public int GetLapsCompleted()
+    private void UpdateLapsText()
     {
-        return lapsCompleted;
+        // Actualizar el texto de vueltas
+        if (lapsText != null)
+        {
+            lapsText.text = $"{lapsCompleted}/{maxLaps}";
+        }
+    }
+
+    private void EndRace()
+    {
+        // Acciones a realizar cuando se alcanzan las vueltas máximas
+        Debug.Log("La carrera ha terminado.");
     }
 }
