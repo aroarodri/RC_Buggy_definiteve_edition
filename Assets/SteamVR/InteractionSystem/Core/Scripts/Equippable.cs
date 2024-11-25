@@ -4,13 +4,10 @@
 //
 //=============================================================================
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Valve.VR.InteractionSystem
 {
-
     public enum WhichHand
     {
         Left,
@@ -26,6 +23,9 @@ namespace Valve.VR.InteractionSystem
         public Transform[] antiFlip;
 
         public WhichHand defaultHand = WhichHand.Right;
+
+        public Camera camBuggy;
+        public GameObject planeBuggy;
 
         private Vector3 initialScale;
         private Interactable interactable;
@@ -60,6 +60,10 @@ namespace Valve.VR.InteractionSystem
                     {
                         antiFlip[transformIndex].localScale = new Vector3(1, 1, 1);
                     }
+                    // Flip camBuggy
+                    camBuggy.transform.localScale = new Vector3(1, 1, 1);
+                    // Flip planeBuggy
+                    //planeBuggy.transform.localScale = new Vector3(1, 1, 1);
                 }
                 else
                 {
@@ -68,6 +72,10 @@ namespace Valve.VR.InteractionSystem
                     {
                         antiFlip[transformIndex].localScale = new Vector3(-1, 1, 1);
                     }
+                    // Flip camBuggy
+                    camBuggy.transform.localScale = new Vector3(-1, 1, 1);
+                    // Flip planeBuggy
+                    //planeBuggy.transform.localScale = new Vector3(-1, 1, 1);
                 }
                 transform.localScale = flipScale;
             }

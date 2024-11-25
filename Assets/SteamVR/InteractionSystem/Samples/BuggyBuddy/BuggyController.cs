@@ -6,11 +6,8 @@
 
 #if UNITY_UGUI_UI || !UNITY_2019_2_OR_NEWER
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Valve.VR;
-using Valve.VR.InteractionSystem;
 
 namespace Valve.VR.InteractionSystem.Sample
 {
@@ -59,6 +56,8 @@ namespace Valve.VR.InteractionSystem.Sample
         private Coroutine resettingRoutine;
 
         private Vector3 initialScale;
+
+        private Vector3 initialRotation;
 
         private void Start()
         {
@@ -149,7 +148,7 @@ namespace Valve.VR.InteractionSystem.Sample
 
             while (Time.time < endTime)
             {
-                
+
                 yield return null;
             }
 
@@ -171,7 +170,7 @@ namespace Valve.VR.InteractionSystem.Sample
                 buzztimer = 0;
                 if (interactable.attachedToHand)
                 {
-                    interactable.attachedToHand.TriggerHapticPulse((ushort)Mathf.RoundToInt(300 * Mathf.Lerp(1.0f, 0.6f, buggy.mvol)));
+                    interactable.attachedToHand.TriggerHapticPulse((ushort) Mathf.RoundToInt(300 * Mathf.Lerp(1.0f, 0.6f, buggy.mvol)));
                 }
             }
         }
