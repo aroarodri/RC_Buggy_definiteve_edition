@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+[ExecuteAlways] // Permite que este script se ejecute en el editor
 public class CheckPoint : MonoBehaviour
 {
     public UnityEvent onCheckPointTriggered; // Evento de Unity para notificar al manager
@@ -13,17 +14,29 @@ public class CheckPoint : MonoBehaviour
         ActivarCheckPoint(); // Activar el primer checkpoint al iniciar
     }
 
-    private void OnDrawGizmos()
+        private void OnDrawGizmos()
     {
-        BoxCollider boxCollider = GetComponent<BoxCollider>();
+        if (boxCollider == null)
+        {
+            boxCollider = GetComponent<BoxCollider>();
+        }
+
         if (boxCollider != null)
         {
+            // Configurar la matriz del Gizmo para reflejar la posición, rotación y escala del BoxCollider
+            Gizmos.matrix = Matrix4x4.TRS(
+                transform.TransformPoint(boxCollider.center), // Centro del BoxCollider en el espacio global
+                transform.rotation,                           // Rotación del objeto
+                transform.lossyScale                          // Escala global
+            );
+
+            // Configurar el color en función del estado del checkpoint
             Gizmos.color = checkPointActivo ? new Color(0, 1, 0, 0.5f) : new Color(1, 0, 0, 0.5f);
-            Vector3 colliderCenter = transform.position + transform.rotation * Vector3.Scale(boxCollider.center, transform.lossyScale);
-            Vector3 colliderSize = Vector3.Scale(boxCollider.size, transform.lossyScale);
-            Gizmos.DrawCube(colliderCenter, colliderSize);
+            Gizmos.DrawCube(Vector3.zero, boxCollider.size);
+
+            // Dibujar el wireframe del BoxCollider
             Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(colliderCenter, colliderSize);
+            Gizmos.DrawWireCube(Vector3.zero, boxCollider.size);
         }
     }
 
@@ -32,7 +45,7 @@ public class CheckPoint : MonoBehaviour
         if (checkPointActivo && other.CompareTag("Buggy"))
         {
             DesactivarCheckPoint();
-            onCheckPointTriggered?.Invoke();  // Disparar el evento al pasar por el checkpoint
+            onCheckPointTriggered?.Invoke(); // Disparar el evento al pasar por el checkpoint
         }
     }
 
